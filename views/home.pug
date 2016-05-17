@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  #wrapper
+    #header
+      h1= title
+  #display
+    #login
+      form(method='post')
+        | Enter your name
+        div
+          input(type='text' name='username')
+          input(type='submit' value='Log In')
+  #footer
+    a(href='/page?name=about') About
+    a(href='/page?name=conatact') Contact Us
+    a(href='https://github.com/keawade/angular-chat') GitHub Repo
