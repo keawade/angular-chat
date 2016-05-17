@@ -38,3 +38,6 @@ typings
 # Compiled TypeScript
 app/*.js
 app/*.js.map
+
+# MongoDB data directory
+data
