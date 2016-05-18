@@ -4,4 +4,9 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
+    - if(_user) {
+        a(href='/auth/logout') Log Out
+    - }
+    h1
+      a(href='/') #{sitename}
     block content

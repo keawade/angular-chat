@@ -1,31 +1,31 @@
 var express = require('express')
-var path = require('path')
-// var favicon = require('serve-favicon')
 var logger = require('morgan')
-var cookieParser = require('cookie-parser')
-var bodyParser = require('body-parser')
-
-// var routes = require('./routes/index')
-// var users = require('./routes/users')
-var stack = require('./routes/stack')
-
 var app = express()
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'))
-app.set('view engine', 'pug')
+var mongoose = require('mongoose')
 
-// uncomment after placing your favicon in /public
-// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
+mongoose.connect('mongodb://localhost/chattr')
+
+app.locals.sitename = "Keith's App"
+app.locals.source_url = 'https://github.com/keawade/angular-chat'
+
 app.use(logger('dev'))
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(cookieParser())
-app.use(express.static(path.join(__dirname, 'public')))
 
-// app.use('/', routes)
-// app.use('/users', users)
-app.get('/', stack.home)
+app.set('view engine', 'pug')
+app.use(express.static('public'))
+
+app.get('*', function (req, res, next) {
+  if (req.user) {
+    res.locals.loggedIn = true
+  } else {
+    res.locals.loggedIn = false
+  }
+  next()
+})
+
+app.use('/api', require('./routes/api'))
+app.use('/auth', require('./routes/auth'))
+app.use('/', require('./routes/core'))
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -34,7 +34,7 @@ app.use(function (req, res, next) {
   next(err)
 })
 
-// error handlers
+// error handlers TODO - Disable dev error handler
 
 // development error handler
 // will print stacktrace
